@@ -4,9 +4,9 @@ import RPI.GPIO as gpio
 import tty
 import termios
 
-# TODO: Define Pin Outs
-fore    = []
-aft     = []
+# in, in, en (PWM)
+fore = [29, 31, 33]
+aft = [16, 18, 12]
 
 # GPIO Setup
 gpio.setmode(gpio.BOARD)
@@ -23,8 +23,8 @@ gpio.output(aft[0], gpio.LOW)
 gpio.output(aft[1], gpio.HIGH)
 
 # pwm
-pwm_fore    = gpio.PWM(fore[2], 0)
-pwm_aft     = gpio.PWM(aft[2], 0)
+pwm_fore = gpio.PWM(fore[2], 0)
+pwm_aft = gpio.PWM(aft[2], 0)
 pwm_fore.start(0)
 pwm_aft.start(0)
 
