@@ -6,7 +6,7 @@ import termios
 import sys
 import time
 
-# in, in, en (PWM)
+# in, in2, en (PWM)
 fore = [29, 31, 33]
 aft = [16, 18, 12]
 
@@ -37,10 +37,14 @@ try:
         key = ord(sys.stdin.read(1))
         if key == 100:
             # go
-            p.changeDutyCycle(50)
+            print("Key drive")
+            pwm_fore.changeDutyCycle(50)
+            pwm_aft.changeDutyCycle(50)
         elif key == 120:
             # stop
-            p.changeDutyCycle(0)
+            print("Key stop")
+            pwm_fore.changeDutyCycle(0)
+            pwm_aft.changeDutyCycle(0)
         elif key == 115:
             # switch direction
             gpio.output(fore[0], not gpio.input(fore[0]))
