@@ -9,6 +9,8 @@ import time
 # in, in, en (PWM)
 fore = [29, 31, 33]
 aft = [16, 18, 12]
+power = 50
+max_pwm = 100
 
 # GPIO Setup
 gpio.setmode(gpio.BOARD)
@@ -25,8 +27,8 @@ gpio.output(aft[0], gpio.LOW)
 gpio.output(aft[1], gpio.HIGH)
 
 # pwm
-pwm_fore = gpio.PWM(fore[2], 100)
-pwm_aft = gpio.PWM(aft[2], 100)
+pwm_fore = gpio.PWM(fore[2], max_pwm)
+pwm_aft = gpio.PWM(aft[2], max_pwm)
 pwm_fore.start(0)
 pwm_aft.start(0)
 
@@ -37,12 +39,17 @@ try:
         key = ord(sys.stdin.read(1))
         if key == 100:
             # go
-            p.changeDutyCycle(50)
+            print(key)
+            pwm_fore.ChangeDutyCycle(power)
+            pwm_aft.ChangeDutyCycle(power)
         elif key == 120:
             # stop
-            p.changeDutyCycle(0)
+            print(key)
+            pwm_fore.ChangeDutyCycle(0)
+            pwm_aft.ChangeDutyCycle(0)
         elif key == 115:
             # switch direction
+            print(key)
             gpio.output(fore[0], not gpio.input(fore[0]))
             gpio.output(fore[1], not gpio.input(fore[1]))
             gpio.output(aft[0], not gpio.input(aft[0]))
