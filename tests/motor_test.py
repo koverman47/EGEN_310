@@ -51,14 +51,14 @@ try:
             gpio.output(aft[1], not gpio.input(aft[1]))
 except KeyboardInterrupt:
     pass
-
-fd = sys.stdin.fileno()
-old = termios.tcgetattr(fd)
-old[3] = old[3] | termios.ECHO
-termios.tcsetattr(fd, termios.TCSADRAIN, old)
-
-
-pwm_fore.stop()
-pwm_aft.stop()
-gpio.cleanup()
+finally:
+    # Return stdin to ECHO
+    fd = sys.stdin.fileno()
+    old = termios.tcgetattr(fd)
+    old[3] = old[3] | termios.ECHO
+    termios.tcsetattr(fd, termios.TCSADRAIN, old)
+    # End GPIO
+    pwm_fore.stop()
+    pwm_aft.stop()
+    gpio.cleanup()
 
