@@ -5,17 +5,18 @@ import sys
 
 
 def main(string):
-    print(string)
+    #print(string)
     device = usb.core.find(idVendor=0x0079, idProduct=0x0006)
-#    print(type(device))
+    #print(type(device))
 
     device.set_configuration()
 
     endpoint = device[0][(0,0)][0]
-    print(device[0][(0,0)])
+    print(device)
 
     data = None
     while True:
+        device.reset()
         try:
             data = device.read(endpoint.bEndpointAddress, endpoint.wMaxPacketSize)
             rxdata = ''.join([chr(x) for x in data])
