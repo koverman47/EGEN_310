@@ -12,8 +12,12 @@ aft = [16, 18, 12]
 power = 50
 max_pwm = 100
 
+servo_pin = 32
+servo = 190
+
 # GPIO Setup
 gpio.setmode(gpio.BOARD)
+gpio.setup(servo_pin, gpio.OUT)
 for i in range(3):
     gpio.setup(fore[i], gpio.OUT)
     gpio.setup(aft[i], gpio.OUT)
@@ -31,6 +35,8 @@ pwm_fore = gpio.PWM(fore[2], max_pwm)
 pwm_aft = gpio.PWM(aft[2], max_pwm)
 pwm_fore.start(0)
 pwm_aft.start(0)
+pwm_servo = gpio.PWM(servo_pin, servo)
+pwm_servo.ChangeDutyCycle(100)
 
 
 tty.setcbreak(sys.stdin)
@@ -54,6 +60,12 @@ try:
             gpio.output(fore[1], not gpio.input(fore[1]))
             gpio.output(aft[0], not gpio.input(aft[0]))
             gpio.output(aft[1], not gpio.input(aft[1]))
+        elif key == 114:
+            servo -= 5
+            pwm_servo.ChangeFrequency(servo)
+        elif key == 108:
+            servo += 5
+            pwm_servo.ChangeFrequency(servo)
 except KeyboardInterrupt:
     pass
 finally:
@@ -65,5 +77,6 @@ finally:
     # End GPIO
     pwm_fore.stop()
     pwm_aft.stop()
+    pwm_servo.stop()
     gpio.cleanup()
 
