@@ -1,10 +1,11 @@
-from configuration import Configuratoin
-
+from configurations.configuration import Configuration
 
 class Config4(Configuration):
+    description = "Axis (Joysick) + Z for forward and R for reverse."
 
     def __init__(self):
         Configuration.__init__(self)
+        self.name = "Configuration 4"
 
     def resolveReadings(self, axis0, axis1):
         z = self.controller.get_button(7)
@@ -19,4 +20,4 @@ class Config4(Configuration):
         return (z, power, turn)
 
     def getConfigDescription(self):
-        return "Axis (Joysick) + Z for forward and R for reverse."
+        return description 

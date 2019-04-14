@@ -1,10 +1,11 @@
-from configuration import Configuration
-
+from configurations.configuration import Configuration
 
 class Config3(Configuration):
+    description = "Axis (Joystick) for turn and power. A/B for forward/reverse."
 
     def __init__(self):
         Configuration.__init__(self)
+        self.name = "Configuration 3"
 
     def resolveReadings(self, axis0, axis1):
         a = self.controller.get_button(6)
@@ -19,4 +20,4 @@ class Config3(Configuration):
         return (a, power, turn)
 
     def getConfigDescription(self):
-        return "Axis (Joystick) for turn and power. A/B for forward/reverse."
+        return description 

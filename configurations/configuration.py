@@ -8,6 +8,7 @@ class Configuration():
         pygame.init()
         self.controller = pygame.joystick.Joystick(0)
         self.controller.init()
+        self.name = "Configuration"
 
     def read(self):
         axis0 = round(self.controller.get_axis(0), 2)
