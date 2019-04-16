@@ -34,14 +34,14 @@ except SSHException as e:
 except:
     print("Whoopsie doosie")
 
-result = ssh.exec_command("./EGEN_310/reader.py")
+result = ssh.exec_command("./EGEN_310/tests/reader_test.py")
 
 try:
     while True:
         root.update()
         events = pygame.event.get()
         data = app.configurations[app.selected].controller.read()
-        result[0].write(data) # write to stdin
+        result[0].write(data + "\n") # write to stdin
 except KeyboardInterrupt as e:
     print(e)
 except NotImplementedError as e:
@@ -57,5 +57,12 @@ except AttributeError as e:
 except:
     print(sys.exc_info()[0])
 finally:
+    result[0].write("exit")    
     ssh.close()
     sys.exit("Done!")
+
+
+
+
+
+
