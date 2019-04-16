@@ -1,10 +1,11 @@
+import math
 from configurations.configuration import Configuration
 
 class Config4(Configuration):
     description = "Axis (Joysick) + Z for forward and R for reverse."
 
-    def __init__(self):
-        Configuration.__init__(self)
+    def __init__(self, controller):
+        Configuration.__init__(self, controller)
         self.name = "Configuration 4"
 
     def resolveReadings(self, axis0, axis1):
@@ -12,10 +13,10 @@ class Config4(Configuration):
         r = self.controller.get_button(5)
 
         if (not z and not r) or (z and r):
-            return (1, 1, 1)
+            return (1, 0, 1500)
 
-        power = 254 * math.sqrt(axis0**2 + axis2**2)
-        # turn = 
+        power = 90 * math.sqrt(axis0**2 + axis1**2)
+        turn = (450 * axis0) + 1500
 
         return (z, power, turn)
 

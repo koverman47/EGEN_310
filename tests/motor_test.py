@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import RPi.GPIO as gpio
+import pigpio
 import tty
 import termios
 import sys
@@ -77,6 +78,5 @@ finally:
     # End GPIO
     pwm_fore.stop()
     pwm_aft.stop()
-    pwm_servo.stop()
     gpio.cleanup()
 
