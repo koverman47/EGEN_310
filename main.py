@@ -16,7 +16,7 @@ passw = "pi"
 root = Tk()
 app = App(root, 640, 480)
 
-'''
+
 try:
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -31,15 +31,17 @@ except SSHException as e:
     print(e)
     print("Unkown SSH error.")
     sys.exit(0)
-'''
+except:
+    print("Whoopsie doosie")
+
+result = ssh.exec_command("./EGEN_310/reader.py")
 
 try:
     while True:
         root.update()
         events = pygame.event.get()
-        #result = None
-        #result = ssh.exec_command() # std_in, std_out, std_error
-        print(app.configurations[app.selection].controller.read())
+        data = app.configurations[app.selected].controller.read()
+        result[0].write(data) # write to stdin
 except KeyboardInterrupt as e:
     print(e)
 except NotImplementedError as e:
@@ -55,5 +57,5 @@ except AttributeError as e:
 except:
     print(sys.exc_info()[0])
 finally:
-    #ssh.close()
+    ssh.close()
     sys.exit("Done!")
