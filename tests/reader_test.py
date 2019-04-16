@@ -2,17 +2,23 @@
 
 import sys
 import os
+import traceback
 
-f = open("out.log", "w")
+f = open("EGEN_310/tests/out.log", "w")
 counter = 0
 try:
-    while counter < 1:
-        counter += 1
+    while True:
+        #f.write(str(counter) + "\n")
+        #counter += 1
         var = input()
-        f.write(var + "\n")
+        if var == "exit":
+            f.write("Chunky monkey\n")
+            break
+        #f.write(var + "\n")
+        data = var.rstrip().split("|")
+        f.write(data[0] + " " + data[1] + " " + data[2] + "\n")
 except:
-    f.write(sys.exc_info()[0] + "\n")
-    f.write("An error has occurred")
+    f.write(traceback.format_exc() + "\n")
 finally:
     f.write("Done")
     f.close()
