@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 import RPi.GPIO as gpio
+import pigpio
+import subprocess
 import tty
 import termios
 import sys
@@ -12,12 +14,12 @@ aft = [16, 18, 12]
 power = 50
 max_pwm = 100
 
-servo_pin = 32
-servo = 190
+#servo_pin = 32
+#servo = 25
 
 # GPIO Setup
 gpio.setmode(gpio.BOARD)
-gpio.setup(servo_pin, gpio.OUT)
+#gpio.setup(servo_pin, gpio.OUT)
 for i in range(3):
     gpio.setup(fore[i], gpio.OUT)
     gpio.setup(aft[i], gpio.OUT)
@@ -35,8 +37,14 @@ pwm_fore = gpio.PWM(fore[2], max_pwm)
 pwm_aft = gpio.PWM(aft[2], max_pwm)
 pwm_fore.start(0)
 pwm_aft.start(0)
-pwm_servo = gpio.PWM(servo_pin, servo)
-pwm_servo.ChangeDutyCycle(100)
+#pwm_servo = gpio.PWM(servo_pin, max_pwm)
+#pwm_servo.start(0)
+#pwm_servo.ChangeDutyCycle(25)
+pi = pigpio.pi()
+servo_pin = 12
+servo = 1500
+pi.set_servo_pulsewidth(servo_pin, servo)
+#subprocess.run(["sudo", "pigpiod"])
 
 
 tty.setcbreak(sys.stdin)
@@ -61,11 +69,24 @@ try:
             gpio.output(aft[0], not gpio.input(aft[0]))
             gpio.output(aft[1], not gpio.input(aft[1]))
         elif key == 114:
-            servo -= 5
-            pwm_servo.ChangeFrequency(servo)
+            print(key)
+            if servo > 1050:
+                servo -= 50
+            print("New Duty Cycle: %s" % servo)
+            #pwm_servo.ChangeFrequency(servo)
+            #pwm_servo.ChangeDutyCycle(servo)
+            pi.set_servo_pulsewidth(servo_pin, servo)
         elif key == 108:
-            servo += 5
-            pwm_servo.ChangeFrequency(servo)
+            print(key)
+            if servo < 1950:
+            	servo += 50
+            print("New Duty Cycle: %s" % servo)
+            #pwm_servo.ChangeFrequency(servo)
+            #pwm_servo.ChangeDutyCycle(servo)
+            pi.set_servo_pulsewidth(servo_pin, servo)
+        elif key == 110:
+            servo = 1500
+            pi.set_servo_pulsewidth(servo_pin, servo)
 except KeyboardInterrupt:
     pass
 finally:
@@ -77,6 +98,6 @@ finally:
     # End GPIO
     pwm_fore.stop()
     pwm_aft.stop()
-    pwm_servo.stop()
+    #pwm_servo.stop()
     gpio.cleanup()
 
