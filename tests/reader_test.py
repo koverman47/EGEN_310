@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import sys
-import os
 
 f = open("out.log", "w")
 counter = 0

@@ -9,7 +9,8 @@ from app import App
 
 host = "zeropythirty"
 #ip = "10.152.183.190"
-ip = "10.152.247.52"
+#ip = "10.152.247.52"
+ip = "10.152.180.3"
 user = "pi"
 passw = "pi"
 
@@ -34,9 +35,10 @@ except SSHException as e:
 except:
     print("Whoopsie doosie")
 
-result = ssh.exec_command("./EGEN_310/tests/reader_test.py")
-
 try:
+    ssh.exec_command("sudo pigpiod")
+    #result = ssh.exec_command("./EGEN_310/tests/reader_test.py")
+    result = ssh.exec_command("./EGEN_310/reader.py")
     while True:
         root.update()
         events = pygame.event.get()

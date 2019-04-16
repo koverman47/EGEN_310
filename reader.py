@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import sys
-import os
 import RPi.GPIO as gpio
 import pigpio
 import traceback
