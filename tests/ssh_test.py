@@ -8,7 +8,7 @@ import termios
 
 # RPi Zero w SSH Credentials
 host = "zeropythirty"
-ip = "10.152.183.190"
+ip = "10.152.247.52"
 user = "pi"
 passw = "pi"
 

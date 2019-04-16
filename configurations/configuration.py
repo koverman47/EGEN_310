@@ -1,13 +1,11 @@
-import pygame
 import math
 
 
 class Configuration():
 
-    def __init__(self):
-        pygame.init()
-        self.controller = pygame.joystick.Joystick(0)
-        self.controller.init()
+    def __init__(self, controller):
+        self.controller = controller
+        self.name = "Configuration"
 
     def read(self):
         axis0 = round(self.controller.get_axis(0), 2)
@@ -16,12 +14,12 @@ class Configuration():
         for_rev, power, turn = self.resolveReadings(axis0, axis1)
 
         assert for_rev in [0, 1]
-        assert power >= 1
+        assert power >= 0
         assert power <= 255
-        assert turn >= 1
-        assert turn <= 255
+        assert turn >= 1000
+        assert turn <= 2000
 
-        return str(for_rev) + "|" + str(power) + "|" + str(turn)
+        return str(for_rev) + "|" + str(int(power)) + "|" + str(int(turn))
 
     def resolveReadings(self):
         raise NotImplementedError("Method 'resolveReadings' not implemented.")
