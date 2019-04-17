@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import sys
-import os
 import RPi.GPIO as gpio
 import pigpio
 import traceback
@@ -34,7 +33,6 @@ pwm_aft.start(0)
 pi = pigpio.pi()
 pi.set_servo_pulsewidth(servo, 1500)
 
-#f = open("~/EGEN_310/out.log", "w+")
 f = open("out.log", "w+")
 forward = True
 #counter = 0
@@ -50,6 +48,7 @@ try:
         data[0] = int(data[0])
         data[1] = int(data[1])
         data[2] = int(data[2])
+        f.write(data[0] + " " + data[1] + " " + data[2] + "\n")
         if (data[0] == 0 and forward) or (data[0] == 1 and not forward):
             forward = not forward
             gpio.output(fore[0], not gpio.input(fore[0]))
@@ -68,13 +67,9 @@ try:
         pwm_aft.ChangeDutyCycle(data[1])
         pi.set_servo_pulsewidth(servo, data[2])
 except EOFError as e:
-    #f = open("EGEN_310/out.log", "w")
     f.write(e)
-    #f.close()
 except:
-    #f = open("EGEN_310/out.log", "w")
     f.write(traceback.format_exc() + "\n")
-    #f.close()
 finally:
     f.write("Done")
     f.close()

@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import sys
-import os
 import traceback
 
 f = open("EGEN_310/tests/out.log", "w")
