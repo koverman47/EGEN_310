@@ -10,7 +10,8 @@ from app import App
 host = "zeropythirty"
 #ip = "10.152.183.190"
 #ip = "10.152.247.52"
-ip = "10.152.180.3"
+#ip = "10.152.180.3"
+ip = "10.152.242.51"
 user = "pi"
 passw = "pi"
 
@@ -32,6 +33,8 @@ except SSHException as e:
     print(e)
     print("Unkown SSH error.")
     sys.exit(0)
+except OSError as e:
+    print(e)
 except:
     print("Whoopsie doosie")
 
@@ -42,8 +45,11 @@ try:
     while True:
         root.update()
         events = pygame.event.get()
-        data = app.configurations[app.selected].controller.read()
+        data = app.configurations[app.selected].controller.read(events)
+        if not data:
+            continue
         result[0].write(data + "\n") # write to stdin
+        result[0].flush()
 except KeyboardInterrupt as e:
     print(e)
 except NotImplementedError as e:
@@ -54,6 +60,7 @@ except SSHException as e:
         print(result)
     else:
         print("Unkown SSH error.")
+    print("Unkown SSH error.")
 except AttributeError as e:
     print(e)
 except:

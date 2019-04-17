@@ -33,6 +33,7 @@ pwm_aft.start(0)
 pi = pigpio.pi()
 pi.set_servo_pulsewidth(servo, 1500)
 
+f = open("EGEN_310/out.log", "w")
 forward = True
 try:
     while True:
@@ -42,6 +43,7 @@ try:
         data[0] = int(data[0])
         data[1] = int(data[1])
         data[2] = int(data[2])
+        f.write(data[0] + " " + data[1] + " " + data[2] + "\n")
         if (data[0] == 0 and forward) or (data[0] == 1 and not forward):
             forward = not forward
             gpio.output(fore[0], not gpio.input(fore[0]))
@@ -52,14 +54,16 @@ try:
         pwm_aft.ChangeDutyCycle(data[1])
         pi.set_servo_pulsewidth(data[2])
 except EOFError as e:
-    f = open("~/EGEN_310/error_log", "w")
+    #f = open("~/EGEN_310/error_log", "w")
     f.write(e)
-    f.close()
+    #f.close()
 except:
-    f = open("~/EGEN_310/error_log", "w")
+    #f = open("~/EGEN_310/error_log", "w")
     f.write(traceback.format_exc() + "\n")
-    f.close()
+    #f.close()
 finally:
+    f.write("Done")
+    f.close()
     pwm_fore.stop()
     pwm_aft.stop()
     gpio.cleanup()
