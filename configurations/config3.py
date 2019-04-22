@@ -43,8 +43,8 @@ class Config3(Configuration):
             ret = (self.for_rev, self.power, self.turn)
         if not change:
             return None
-        if change:
-            print(ret)
+        #if change:
+        #    print(ret)
         return ret
 
     def getConfigDescription(self):
