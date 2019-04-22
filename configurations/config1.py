@@ -10,6 +10,10 @@ class Config1(Configuration):
         Configuration.__init__(self, controller)
         self.name = "Configuration 1"
 
+    '''
+    ' Axis joystick used for direction and power
+    ' z button (back of controller) used to allow drive
+    '''
     def resolveReadings(self, axis0, axis1, events):
         ret = None
         for e in events:

@@ -5,7 +5,6 @@ from configurations import *
 from tkinter import *
 import tkinter.simpledialog as SD
 import tkinter.messagebox as MB
-#Others
 import pygame
 import time
 import sys
@@ -13,6 +12,9 @@ import sys
 
 class App(Frame):
 
+    '''
+    ' Initialize main application frame
+    '''
     def __init__(self, master=None, width=640, height=480):
         Frame.__init__(self, master)
         self.master = master
@@ -21,11 +23,15 @@ class App(Frame):
         self.init_window(width, height)
 
         self.configure_grid()
-        self.configure_menu_bar() #TODO
+        self.configure_menu_bar()
         self.configure_pygame()
-        self.configure_side_bar() #TODO
+        self.configure_side_bar()
         self.configure_main_panel() #TODO - camera feed in main panel once started?
 
+    '''
+    ' Set window geometry
+    ' Get user name
+    '''
     def init_window(self, width, height):
         self.master.geometry("%sx%s" % (width, height))
         self.master.title("RC Car")
@@ -34,6 +40,9 @@ class App(Frame):
             self.master.title(name + "'s RC Car")
         self.pack(fill=BOTH, expand=True)
 
+    '''
+    ' Set 2x6 grid layout - equal weights
+    '''
     def configure_grid(self):
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=5)
@@ -43,6 +52,11 @@ class App(Frame):
         self.rowconfigure(2, weight=1)
         self.rowconfigure(3, weight=1)
 
+    '''
+    ' Set menu bar
+    ' If OSX - top of screen
+    ' Else top of window
+    '''
     def configure_menu_bar(self):
         menu = Menu(self.master)
         self.master.config(menu=menu)
@@ -57,6 +71,9 @@ class App(Frame):
         menu.add_cascade(label="File", menu=f)
         menu.add_cascade(label="Configuration", menu=conf)
 
+    '''
+    ' Create configurations corresponding to controller options
+    '''
     def configure_side_bar(self):
         self.configurations.append(Nav(frame=self, controller=config1.Config1(self.joystick)))
         self.configurations.append(Nav(frame=self, controller=config2.Config2(self.joystick)))
@@ -68,21 +85,33 @@ class App(Frame):
             self.configurations[c].bind("<Button-1>", lambda e, i=c: self.set_config(i))
         self.configurations[self.selected].config(bg="blue", relief="sunken")
 
+    '''
+    ' Video Feed
+    '''
     def configure_main_panel(self):
         pass
 
+    '''
+    ' Callback for setting new controller configuration
+    '''
     def set_config(self, c):
         if MB.askyesno("Verify Choice", self.configurations[c].controller.description + " Is this the configuration you want?"):
             self.configurations[self.selected].config(bg="white", relief="raised")
             self.configurations[c].config(bg="blue", relief="sunken")
             self.selected = c
 
+    '''
+    ' Establish pygame thread and intitialize the joystick controller
+    '''
     def configure_pygame(self):
         pygame.init()
         self.joystick = pygame.joystick.Joystick(0)
         self.joystick.init()
 
     def exit(self):
+        '''
+        ' Close joystick controller and exit
+        '''
         self.joystick.quit()
         sys.exit("Exiting App")
 

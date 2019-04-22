@@ -11,6 +11,11 @@ class Config3(Configuration):
         self.a = False
         self.b = False
 
+    '''
+    ' Axis joystick controls power and turn
+    ' A allows forward drive
+    ' B allows reverse drive
+    '''
     def resolveReadings(self, axis0, axis1, events):
         ret = None
         change = False
@@ -43,8 +48,6 @@ class Config3(Configuration):
             ret = (self.for_rev, self.power, self.turn)
         if not change:
             return None
-        #if change:
-        #    print(ret)
         return ret
 
     def getConfigDescription(self):

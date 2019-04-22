@@ -11,6 +11,11 @@ class Config4(Configuration):
         self.z = False
         self.r = False
 
+    '''
+    ' Axis joystick to control power and turn
+    ' Z to allow forward drive
+    ' R to allow reverse drive
+    '''
     def resolveReadings(self, axis0, axis1, events):
         ret = None
         change = False

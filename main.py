@@ -7,20 +7,18 @@ import pygame
 from tkinter import *
 from app import App
 
+# SSH Data
 host = "zeropythirty"
-#ip = "10.152.183.190"
-#ip = "10.152.247.52"
-#ip = "10.152.180.3"
-#ip = "10.152.242.51"
 ip = "10.152.149.177"
 user = "pi"
 passw = "pi"
 
-root = Tk()
-app = App(root, 640, 480)
-
 
 try:
+    '''
+    ' Construct SSH Client
+    ' Default host key policy
+    '''
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(hostname=ip, username=user, password=passw)
@@ -39,17 +37,46 @@ except OSError as e:
 except:
     print("Whoopsie doosie")
 
+'''
+' Construct Tkinter root object
+' Construct application
+'''
+root = Tk()
+app = App(root, 640, 480)
 try:
+    '''
+    ' Start pigpio service on host
+    '''
     ssh.exec_command("sudo pigpiod")
-    #result = ssh.exec_command("./EGEN_310/tests/reader_test.py")
+    '''
+    ' Run Host reader
+    '''
     result = ssh.exec_command("./EGEN_310/reader.py")
     while True:
+        '''
+        ' Update GUI
+        ' Grabs GUI events
+        '''
         root.update()
+
+        '''
+        ' Get Joystick Events
+        ' Compute user commands
+        '''
         events = pygame.event.get()
         data = app.configurations[app.selected].controller.read(events)
+
+        '''
+        ' Don't write to host if no updates
+        '''
         if not data:
             continue
-        result[0].write(data + "\n") # write to stdin
+
+        '''
+        ' Write to stdin over ssh
+        ' Flush stdin
+        '''
+        result[0].write(data + "\n")
         result[0].flush()
 except KeyboardInterrupt as e:
     print(e)
@@ -67,7 +94,14 @@ except AttributeError as e:
 except:
     print(sys.exc_info()[0])
 finally:
-    result[0].write("exit")    
+    '''
+    ' Write exit message to stdin
+    '''
+    result[0].write("exit")
+
+    '''
+    ' Close SSH Tunnel
+    '''
     ssh.close()
     sys.exit("Done!")
 
