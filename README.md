@@ -23,7 +23,7 @@
   - Miscellaneous tests used for exploration and ideation
   
 ### Diagram
-![Final Diagram](https://github.com/koverman47/EGEN_310/blob/master/final_diagram.png "Diagram")
+![Final Diagram](https://github.com/koverman47/EGEN_310/blob/master/uml.png "Diagram")
 
 ### Resources Used
 - [pygame](https://www.pygame.org/news)
